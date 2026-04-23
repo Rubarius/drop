@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сибметалл — Панель доступа</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --overlay-bg: rgba(44, 62, 80, 0.9);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Шапка */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a252f 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .logo-text span { color: var(--accent-color); }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Сетка карточек */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background-color: var(--accent-color); }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+            transform: scale(0.8);
+            transition: 0.3s ease;
+        }
+
+        .modal-overlay.active .login-box { transform: scale(1); }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .login-box h2 {
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .form-group input:focus { border-color: var(--accent-color); }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        footer { text-align: center; padding: 40px; color: #7f8c8d; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 class="logo-text">СИБ<span>МЕТАЛЛ</span></h1>
+    <p>Корпоративная система авторизации</p>
+</header>
+
+<div class="container">
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Личный кабинет</h3>
+            <p>Доступ к расчетным листам и графику смен.</p>
+            <button class="btn open-modal">Войти в систему</button>
+        </div>
+
+        <div class="card">
+            <h3>Склад и Логистика</h3>
+            <p>Мониторинг остатков металлопроката.</p>
+            <button class="btn open-modal">Открыть базу</button>
+        </div>
+
+        <div class="card">
+            <h3>B2B Портал</h3>
+            <p>Оформление заявок для партнеров компании.</p>
+            <button class="btn open-modal">Вход для клиентов</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="login-box">
+        <span class="close-modal" id="closeBtn">&times;</span>
+        <h2 id="modalTitle">Авторизация</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Логин или Табельный номер</label>
+                <input type="text" placeholder="Введите ваш ID" required>
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 ООО «Сибметалл». Служба информационной безопасности.
+</footer>
+
+<script>
+    const modal = document.getElementById('modalOverlay');
+    const openBtns = document.querySelectorAll('.open-modal');
+    const closeBtn = document.getElementById('closeBtn');
+    const modalTitle = document.getElementById('modalTitle');
+
+    // Открытие модального окна
+    openBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Берем заголовок из карточки, чтобы форма выглядела контекстной
+            const sectionName = btn.parentElement.querySelector('h3').innerText;
+            modalTitle.innerText = sectionName;
+            modal.classList.add('active');
+        });
+    });
+
+    // Закрытие при нажатии на крестик
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    // Закрытие при клике на темный фон
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Обработка формы
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Система: Ошибка доступа. Проверьте правильность ввода данных или обратитесь в IT-отдел.');
+    });
+</script>
+
+</body>
+</html>
